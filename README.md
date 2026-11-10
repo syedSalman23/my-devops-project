@@ -366,17 +366,87 @@ The Git plugin is essential for the SCM checkout in this example. The GitHub plu
 
 ### 15. Common errors and troubleshooting
 ```
-Error	                                    Possible                               reason	Solution
+Error	                                    Possible reason	                           Solution
 Repository not found	                    Incorrect repository URL	             Verify the GitHub clone URL
 Authentication failed	                    Invalid or expired token	             Update Jenkins credentials
-Jenkinsfile not found	                    Incorrect file path	                   Check Script Path and filename
-Branch not found	                        Incorrect branch name	                 Verify */main
-Git command not found	                    Git is not installed on the agent	     Install Git on the agent
-Webhook delivery failed	                  Jenkins is unreachable	               Check URL, network, firewall and HTTPS
-Webhook delivered but no build	          Trigger not configured	               Check the job's Build Triggers
-Build fails	                              Pipeline syntax or command error	     Inspect Console Output
-No executor available	                    No online agent or free executor	     Check Jenkins nodes and executors
+Jenkinsfile not found	                    Incorrect file path	                       Check Script Path and filename
+Branch not found	                              Incorrect branch name	             Verify */main
+Git command not found	                    Git is not installed on the agent	   Install Git on the agent
+Webhook delivery failed	                    Jenkins is unreachable	             Check URL, network, firewall and HTTPS
+Webhook delivered but no build	          Trigger not configured	             Check the job's Build Triggers
+Build fails	                              Pipeline syntax or command error	   Inspect Console Output
+No executor available	                    No online agent or free executor	   Check Jenkins nodes and executors
 ```
+
+#### Useful Jenkins troubleshooting locations
+- Manage Jenkins → Plugins — check installed plugins.
+- Manage Jenkins → Credentials — check stored credentials.
+- Manage Jenkins → Nodes — check agent availability.
+- Job → Console Output — inspect build errors.
+- GitHub → Repository Settings → Webhooks → Recent Deliveries — inspect webhook delivery.
+
+### 16. Alternative: Use Pipeline script directly in Jenkins
+You can also run a pipeline without retrieving the Jenkinsfile from GitHub.
+
+In the Pipeline section, choose:
+```
+Definition → Pipeline script
+```
+Paste your pipeline code directly into the editor.
+This is useful for testing, but for a project, Pipeline script from SCM is generally preferable because the Jenkinsfile stays version-controlled with your application.
+
+### 17. Important security practices
+1. Never store GitHub passwords or tokens directly in a Jenkinsfile.
+2. Use Jenkins Credentials for secrets.
+3. Give tokens only the permissions they need.
+4. Use HTTPS for Jenkins and webhook communication.
+5. Restrict access to the Jenkins dashboard.
+6. Do not expose Jenkins directly to the public internet without proper security controls.
+7. Review build logs before sharing them because they may contain sensitive information.
+8. Rotate credentials if they are accidentally exposed.
+
+18. Complete integration workflow — Quick revision
+```
+GitHub → Jenkins → CI/CD
+1. Install Jenkins Git and required plugins.
+2. Create a GitHub repository.
+3. Create a Jenkinsfile in the repository.
+4. Push the source code to GitHub.
+5. Configure GitHub credentials in Jenkins if required.
+6. Create a Jenkins Pipeline job.
+7. Connect Jenkins to GitHub using Pipeline script from SCM.
+8. Run Build Now and verify Console Output.
+9. Configure GitHub webhook for automatic triggering.
+10. Push another change and verify automatic execution.
+```
+
+### 19. Interview questions and answers
+
+1. What is GitHub integration with Jenkins?
+It allows Jenkins to retrieve source code from GitHub and execute CI/CD pipelines.
+
+2. What is a Jenkinsfile?
+A Jenkinsfile is a text file that defines the pipeline stages and steps. It is usually stored in the root of the project repository.
+
+3. What is SCM?
+SCM stands for Source Code Management. It manages source code versions using tools such as Git.
+
+4. What is a GitHub webhook?
+A webhook sends an HTTP notification from GitHub to Jenkins when an event, such as a code push, occurs.
+
+5. Why do we use Jenkins credentials?
+To securely store authentication details such as GitHub tokens, passwords and SSH keys.
+
+6. What is the difference between Build Now and a webhook?
+Build Now starts a pipeline manually. A webhook can trigger a pipeline automatically when GitHub sends a configured event.
+
+7. Why do we use Pipeline script from SCM?
+It allows Jenkins to retrieve the Jenkinsfile directly from the source code repository.
+
+8. What happens when a developer pushes code to GitHub?
+If webhook triggering is configured, GitHub notifies Jenkins, Jenkins checks out the updated code, and the configured pipeline runs.
+
+
 
 
 
